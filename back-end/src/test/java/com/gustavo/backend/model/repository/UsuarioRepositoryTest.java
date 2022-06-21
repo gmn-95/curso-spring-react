@@ -22,7 +22,7 @@ import com.gustavo.backend.model.entity.Usuario;
 public class UsuarioRepositoryTest {
 	
 	@Autowired
-	UsuarioRepository repository;
+	private UsuarioRepository repository;
 
 	@Test
 	public void deveVerificarAExistenciaDeUmEmail() {
