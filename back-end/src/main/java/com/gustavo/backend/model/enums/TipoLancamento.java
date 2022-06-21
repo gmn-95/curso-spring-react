@@ -1,4 +1,4 @@
-package com.gustavo.backend.model.entity.enums;
+package com.gustavo.backend.model.enums;
 
 public enum TipoLancamento {
 	

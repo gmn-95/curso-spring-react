@@ -17,8 +17,8 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
-import com.gustavo.backend.model.entity.enums.StatusLancamento;
-import com.gustavo.backend.model.entity.enums.TipoLancamento;
+import com.gustavo.backend.model.enums.StatusLancamento;
+import com.gustavo.backend.model.enums.TipoLancamento;
 
 import lombok.Builder;
 import lombok.Data;
