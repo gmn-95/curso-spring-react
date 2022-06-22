@@ -1,5 +1,8 @@
 package com.gustavo.backend.service;
 
+import java.util.Optional;
+
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +12,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.gustavo.backend.exception.RegraNegocioException;
+import com.gustavo.backend.model.entity.Usuario;
 import com.gustavo.backend.model.repository.UsuarioRepository;
 import com.gustavo.backend.service.impl.UsuarioServiceImpl;
 
@@ -30,6 +34,27 @@ public class UsuarioServiceTest {
 	@Before 
 	public void setUp() {
 		service = new UsuarioServiceImpl(repository);
+	}
+	
+	@Test(expected = Test.None.class)
+	public void deveAutenticarUmUsuarioComSucesso() {
+		
+		//cenário
+		String email = "usu@gmail";
+		String senha = "123";
+		
+		//criamos um usuário cadastrado no banco fictício
+		Usuario usuario = Usuario.builder().email(email).senha(senha).id(1L).build();
+		
+		//Simulamos o método findByEmail, dizendo que o retorno dele é o usuário fictício
+		Mockito.when(repository.findByEmail(email)).thenReturn(Optional.of(usuario));
+		
+		
+		//ação
+		Usuario result = service.autenticar(email, senha);
+		
+		//verificação
+		Assertions.assertThat(result).isNotNull();
 	}
 	
 	@Test(expected = Test.None.class) //espera que uma exceção n seja lançada
