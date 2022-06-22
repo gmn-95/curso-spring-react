@@ -1,32 +1,42 @@
 package com.gustavo.backend.service;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.gustavo.backend.exception.RegraNegocioException;
-import com.gustavo.backend.model.entity.Usuario;
 import com.gustavo.backend.model.repository.UsuarioRepository;
+import com.gustavo.backend.service.impl.UsuarioServiceImpl;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @Profile("test")
 public class UsuarioServiceTest {
 
-	@Autowired
 	private UsuarioService service;
 	
-	@Autowired
 	private UsuarioRepository repository;
+	
+	/*
+	 * Mocks -> cria instâncias fakes onde podemos simular a chamada de métodos e
+	 * 			retorno de propriedades.
+	 * */
+	
+	//configurando testes
+	@Before 
+	public void setUp() {
+		repository = Mockito.mock(UsuarioRepository.class);
+		service = new UsuarioServiceImpl(repository);
+	}
 	
 	@Test(expected = Test.None.class) //espera que uma exceção n seja lançada
 	public void deveValidarEmail() {
-		
 		//cenário
-		repository.deleteAll();
+		Mockito.when(repository.existsByEmail(Mockito.anyString())).thenReturn(false);
 		
 		//ação
 		service.validarEmail("usu@gmail");
@@ -36,8 +46,7 @@ public class UsuarioServiceTest {
 	public void deveLancarErroAoValidarEmailQuandoExistirEmailCadastrado() {
 		
 		//cenário
-		Usuario usuario = Usuario.builder().nome("usu").email("usu@gmail").build();
-		repository.save(usuario);
+		Mockito.when(repository.existsByEmail(Mockito.anyString())).thenReturn(true);
 		
 		//acao
 		service.validarEmail("usu@gmail");
