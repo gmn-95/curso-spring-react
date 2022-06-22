@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -12,13 +12,13 @@ import com.gustavo.backend.exception.RegraNegocioException;
 import com.gustavo.backend.model.repository.UsuarioRepository;
 import com.gustavo.backend.service.impl.UsuarioServiceImpl;
 
-@SpringBootTest
 @RunWith(SpringRunner.class)
 @Profile("test")
 public class UsuarioServiceTest {
 
 	private UsuarioService service;
 	
+	@MockBean
 	private UsuarioRepository repository;
 	
 	/*
@@ -29,7 +29,6 @@ public class UsuarioServiceTest {
 	//configurando testes
 	@Before 
 	public void setUp() {
-		repository = Mockito.mock(UsuarioRepository.class);
 		service = new UsuarioServiceImpl(repository);
 	}
 	
