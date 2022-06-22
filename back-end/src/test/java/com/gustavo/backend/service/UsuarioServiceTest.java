@@ -11,6 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.gustavo.backend.exception.ErroAutenticacao;
 import com.gustavo.backend.exception.RegraNegocioException;
 import com.gustavo.backend.model.entity.Usuario;
 import com.gustavo.backend.model.repository.UsuarioRepository;
@@ -55,6 +56,31 @@ public class UsuarioServiceTest {
 		
 		//verificação
 		Assertions.assertThat(result).isNotNull();
+	}
+	
+	@Test
+	public void deveLancarErroQuandoSenhaNaoBater() {
+		
+		//cenário
+		String senha = "123";
+		Usuario usuario = Usuario.builder().email("usu@email").senha(senha).build();
+		Mockito.when(repository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(usuario));
+		
+		//ação
+		Throwable exception = Assertions.catchThrowable(() -> service.autenticar("usu@email", "321"));
+		Assertions.assertThat(exception).isInstanceOf(ErroAutenticacao.class).hasMessage("Senha inválida");
+	}
+	
+	@Test
+	public void deveLancarErroQuandoNaoEncontrarUsuarioCadastradoComOEmailInformado() {
+		
+		//cenário
+		Mockito.when(repository.findByEmail(Mockito.anyString())).thenReturn(Optional.empty());
+		
+		//ação
+		Throwable exception = Assertions.catchThrowable(() -> service.autenticar("usu@email", "123"));
+		Assertions.assertThat(exception).isInstanceOf(ErroAutenticacao.class).hasMessage("Usuário não encontrado para o e-mail informado");
+		
 	}
 	
 	@Test(expected = Test.None.class) //espera que uma exceção n seja lançada
