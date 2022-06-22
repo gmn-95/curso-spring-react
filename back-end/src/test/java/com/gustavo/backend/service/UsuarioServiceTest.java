@@ -3,11 +3,11 @@ package com.gustavo.backend.service;
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -21,7 +21,12 @@ import com.gustavo.backend.service.impl.UsuarioServiceImpl;
 @Profile("test")
 public class UsuarioServiceTest {
 
-	private UsuarioService service;
+	/*Spy -> é similar ao mock, porém ele chama os métodos originais, 
+	 * a n ser que eu diga como será o comportamento do método
+	 * 
+	 */
+	@SpyBean
+	private UsuarioServiceImpl service;
 	
 	@MockBean
 	private UsuarioRepository repository;
@@ -31,10 +36,22 @@ public class UsuarioServiceTest {
 	 * 			retorno de propriedades.
 	 * */
 	
-	//configurando testes
-	@Before 
-	public void setUp() {
-		service = new UsuarioServiceImpl(repository);
+	@Test(expected = Test.None.class)
+	public void deveSalvarUmUsuario() {
+		//cenário
+		Mockito.doNothing().when(service).validarEmail(Mockito.anyString());
+		Usuario usuario = Usuario.builder().id(1L).nome("Gustavo").email("teste@email").senha("123").build();
+		
+		Mockito.when(repository.save(Mockito.any(Usuario.class))).thenReturn(usuario);
+		
+		//ação
+		Usuario usuarioSalvo = service.salvarUsuario(new Usuario());
+		
+		//verificação
+		Assertions.assertThat(usuarioSalvo).isNotNull();
+		Assertions.assertThat(usuarioSalvo.getId()).isEqualTo(1L);
+		Assertions.assertThat(usuarioSalvo.getEmail()).isEqualTo("teste@email");
+		Assertions.assertThat(usuarioSalvo.getSenha()).isEqualTo("123");
 	}
 	
 	@Test(expected = Test.None.class)
