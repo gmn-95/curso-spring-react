@@ -54,6 +54,23 @@ public class UsuarioServiceTest {
 		Assertions.assertThat(usuarioSalvo.getSenha()).isEqualTo("123");
 	}
 	
+	@Test(expected = RegraNegocioException.class)
+	public void naoDeveSalvarUmUsuarioComUmEmailJaCadastrado() {
+		//cenário
+		String email = "teste@email";
+		Usuario usuario = Usuario.builder().email(email).build();
+		
+		//lance uma exceção ao validar email, pois o email já existe
+		Mockito.doThrow(RegraNegocioException.class).when(service).validarEmail(email);
+		
+		//ação
+		service.salvarUsuario(usuario);
+		
+		//verificação
+		//não deve chamar o método salvar usuario do repository, pois já existe um usuário com o email informado
+		Mockito.verify(repository, Mockito.never()).save(usuario);
+	}
+	
 	@Test(expected = Test.None.class)
 	public void deveAutenticarUmUsuarioComSucesso() {
 		
