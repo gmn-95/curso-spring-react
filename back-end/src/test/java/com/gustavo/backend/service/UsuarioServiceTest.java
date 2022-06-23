@@ -36,45 +36,48 @@ public class UsuarioServiceTest {
 	 * 			retorno de propriedades.
 	 * */
 	
-	@Test(expected = Test.None.class)
+	@Test(expected = Test.None.class) //espera que uma exceção n seja lançada
 	public void deveSalvarUmUsuario() {
-		//cenário
+		/*	@INÍCIO DO CENÁRIO	*/
+		//Não faça nada ao tentar validar qualquer email
 		Mockito.doNothing().when(service).validarEmail(Mockito.anyString());
 		Usuario usuario = Usuario.builder().id(1L).nome("Gustavo").email("teste@email").senha("123").build();
 		
+		//Quando salvar, retorne o usuário
 		Mockito.when(repository.save(Mockito.any(Usuario.class))).thenReturn(usuario);
 		
-		//ação
+		/*	@INÍCIO DA AÇÃO	*/
 		Usuario usuarioSalvo = service.salvarUsuario(new Usuario());
 		
-		//verificação
+		/*	@INÍCIO DA VERIFICAÇÃO	*/
+		//Verifique que os dados são iguais
 		Assertions.assertThat(usuarioSalvo).isNotNull();
 		Assertions.assertThat(usuarioSalvo.getId()).isEqualTo(1L);
 		Assertions.assertThat(usuarioSalvo.getEmail()).isEqualTo("teste@email");
 		Assertions.assertThat(usuarioSalvo.getSenha()).isEqualTo("123");
 	}
 	
-	@Test(expected = RegraNegocioException.class)
+	@Test(expected = RegraNegocioException.class) //espera que lance uma exceção
 	public void naoDeveSalvarUmUsuarioComUmEmailJaCadastrado() {
-		//cenário
+		/*	@INÍCIO DO CENÁRIO	*/
 		String email = "teste@email";
 		Usuario usuario = Usuario.builder().email(email).build();
 		
 		//lance uma exceção ao validar email, pois o email já existe
 		Mockito.doThrow(RegraNegocioException.class).when(service).validarEmail(email);
 		
-		//ação
+		/*	@INÍCIO DA AÇÃO	*/
 		service.salvarUsuario(usuario);
 		
-		//verificação
+		/*	@INÍCIO DA VERIFICAÇÃO	*/
 		//não deve chamar o método salvar usuario do repository, pois já existe um usuário com o email informado
 		Mockito.verify(repository, Mockito.never()).save(usuario);
 	}
 	
-	@Test(expected = Test.None.class)
+	@Test(expected = Test.None.class) //espera que uma exceção n seja lançada
 	public void deveAutenticarUmUsuarioComSucesso() {
 		
-		//cenário
+		/*	@INÍCIO DO CENÁRIO */
 		String email = "usu@gmail";
 		String senha = "123";
 		
@@ -84,55 +87,66 @@ public class UsuarioServiceTest {
 		//Simulamos o método findByEmail, dizendo que o retorno dele é o usuário fictício
 		Mockito.when(repository.findByEmail(email)).thenReturn(Optional.of(usuario));
 		
-		
-		//ação
+		/* @INÍCIO DA AÇÃO	*/
+		//tenta autenticar o login
 		Usuario result = service.autenticar(email, senha);
 		
-		//verificação
+		/* @INÍCIO DA VERIFICAÇÃO	*/
+		//espera-se que o resultado não seja nulo
 		Assertions.assertThat(result).isNotNull();
 	}
 	
 	@Test
 	public void deveLancarErroQuandoSenhaNaoBater() {
 		
-		//cenário
+		/*	@INÍCIO DO CENÁRIO	*/
 		String senha = "123";
 		Usuario usuario = Usuario.builder().email("usu@email").senha(senha).build();
+		
+		//Encontre um usuário com qualquer email passado
 		Mockito.when(repository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(usuario));
 		
-		//ação
+		/*	@INÍCIO DA AÇÃO	*/
+		//Capture uma exceção ao tentar logar com a senha errada
 		Throwable exception = Assertions.catchThrowable(() -> service.autenticar("usu@email", "321"));
+		//Verifique se a exceção e a mensagem encontrada é a mesma esperada,
 		Assertions.assertThat(exception).isInstanceOf(ErroAutenticacao.class).hasMessage("Senha inválida");
 	}
 	
 	@Test
 	public void deveLancarErroQuandoNaoEncontrarUsuarioCadastradoComOEmailInformado() {
 		
-		//cenário
+		/*	@INÍCIO DO CENÁRIO*/
+		//Retorne vazio, ao tentar encontrar um usuário por qualquer email
 		Mockito.when(repository.findByEmail(Mockito.anyString())).thenReturn(Optional.empty());
 		
-		//ação
+		/*	@INÍCIO DA AÇÃO	*/
+		//Capture uma exceção ao tentar logar com o email errado
 		Throwable exception = Assertions.catchThrowable(() -> service.autenticar("usu@email", "123"));
+		//Verifique se a exceção e a mensagem encontrada é a mesma esperada,
 		Assertions.assertThat(exception).isInstanceOf(ErroAutenticacao.class).hasMessage("Usuário não encontrado para o e-mail informado");
 		
 	}
 	
 	@Test(expected = Test.None.class) //espera que uma exceção n seja lançada
 	public void deveValidarEmail() {
-		//cenário
+		/*	@INÍCIO DO CENÁRIO	*/
+		//Quando for verificar se um email já existe na base, retorne false
 		Mockito.when(repository.existsByEmail(Mockito.anyString())).thenReturn(false);
 		
-		//ação
+		/*	@INÍCIO DA AÇÃO	*/
 		service.validarEmail("usu@gmail");
 	}
 	
 	@Test(expected = RegraNegocioException.class) //espera que lance uma exceção
 	public void deveLancarErroAoValidarEmailQuandoExistirEmailCadastrado() {
 		
-		//cenário
+		/*	@INÍCIO DO CENÁRIO	*/
+		//Quando for verificar se um email já existe na base, retorne true
 		Mockito.when(repository.existsByEmail(Mockito.anyString())).thenReturn(true);
 		
-		//acao
+		/* @INÍCIO DA AÇÃO	*/
+		//Vai lançar uma exceção, pois o email já está cadastrado
 		service.validarEmail("usu@gmail");
 		
 	}

@@ -40,60 +40,60 @@ public class UsuarioRepositoryTest {
 
 	@Test
 	public void deveVerificarAExistenciaDeUmEmail() {
-		//cenário
+		/*  @INÍCIO DO CENÁRIO  */
 		Usuario usuario = criarUsuario();
 		entityManager.persist(usuario);
 		
-		//ação-execução
+		/*  @INÍCIO DA AÇÃO  */
 		boolean result = repository.existsByEmail(usuario.getEmail());
 
-		//verificação
+		/*  @INÍCIO DA VERIFICAÇÃO  */
 		Assertions.assertThat(result).isTrue();
 	}
 	
 	@Test
 	public void deveRetornarFalsoQuandoNaoHouverUsuarioCadastradoComOEmail() {
 		
-		//ação
+		/*  @INÍCIO DA AÇÃO  */
 		boolean result = repository.existsByEmail("usu@gmail");
 		
-		//verificação
+		/*  @INÍCIO DA VERIFICAÇÃO  */
 		Assertions.assertThat(result).isFalse();
 	}
 	
 	@Test
 	public void devePersistirUmUsuarioNaBaseDeDados() {
 		
-		//cenário
+		/*  @INÍCIO DO CENÁRIO  */
 		Usuario usuario = criarUsuario();
 		
-		//ação
+		/*  @INÍCIO DA AÇÃO  */
 		Usuario usuarioSalvo = repository.save(usuario);
 		
-		//verificação
+		/*  @INÍCIO DA VERIFICAÇÃO  */
 		Assertions.assertThat(usuarioSalvo.getId()).isNotNull();
 	}
 	
 	@Test
 	public void deveBuscarUmUsuarioPorEmail() {
-		//cenário
+		/*  @INÍCIO DO CENÁRIO  */
 		Usuario usuario = criarUsuario();
 		entityManager.persist(usuario);
 		
-		//ação
+		/*  @INÍCIO DA AÇÃO  */
 		Optional<Usuario> result = repository.findByEmail("usu@gmail");
 		
-		//verificação
+		/*  @INÍCIO DA VERIFICAÇÃO  */
 		Assertions.assertThat(result.isPresent()).isTrue();
 	}
 	
 	@Test
 	public void deveRetornarVazioAoBuscarUmUsuarioPorEmailQuandoNaoExisteNaBase() {
 		
-		//ação
+		/*  @INÍCIO DA AÇÃO  */
 		Optional<Usuario> result = repository.findByEmail("usu@gmail");
 		
-		//verificação
+		/*  @INÍCIO DA VERIFICAÇÃO  */
 		Assertions.assertThat(result.isPresent()).isFalse();
 	}
 	
