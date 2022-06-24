@@ -2,6 +2,8 @@ package com.gustavo.backend.service.impl;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.gustavo.backend.model.entity.Lancamento;
@@ -19,9 +21,9 @@ public class LancamentoServiceImpl implements LancamentoService{
 	}
 
 	@Override
+	@Transactional
 	public Lancamento salvar(Lancamento lancamento) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.save(lancamento);
 	}
 
 	@Override
