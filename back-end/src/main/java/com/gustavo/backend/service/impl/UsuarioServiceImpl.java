@@ -20,7 +20,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public UsuarioServiceImpl(UsuarioRepository repository) {
 		this.repository = repository;
 	}
-
+	
 	@Override
 	public Usuario autenticar(String email, String senha) {
 		Optional<Usuario> usuario = repository.findByEmail(email);
