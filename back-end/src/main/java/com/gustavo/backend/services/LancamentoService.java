@@ -1,6 +1,7 @@
 package com.gustavo.backend.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.gustavo.backend.model.entities.Lancamento;
 import com.gustavo.backend.model.enums.StatusLancamento;
@@ -18,4 +19,6 @@ public interface LancamentoService {
 	void atualizarStatus(Lancamento lancamento, StatusLancamento statusLancamento);
 	
 	void validar(Lancamento lancamento);
+	
+	Optional<Lancamento> obterPorId(Long id);
 }
