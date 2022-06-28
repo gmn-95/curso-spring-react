@@ -11,11 +11,11 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.gustavo.backend.exception.ErroAutenticacao;
-import com.gustavo.backend.exception.RegraNegocioException;
-import com.gustavo.backend.model.entity.Usuario;
-import com.gustavo.backend.model.repository.UsuarioRepository;
-import com.gustavo.backend.service.impl.UsuarioServiceImpl;
+import com.gustavo.backend.exceptions.ErroAutenticacao;
+import com.gustavo.backend.exceptions.RegraNegocioException;
+import com.gustavo.backend.model.entities.Usuario;
+import com.gustavo.backend.model.repositories.UsuarioRepository;
+import com.gustavo.backend.services.impls.UsuarioServiceImpl;
 
 @RunWith(SpringRunner.class)
 @Profile("test")

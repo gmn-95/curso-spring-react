@@ -1,4 +1,4 @@
-package com.gustavo.backend.model.entity;
+package com.gustavo.backend.model.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

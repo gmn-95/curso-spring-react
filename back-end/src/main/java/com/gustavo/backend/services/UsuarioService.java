@@ -1,6 +1,6 @@
-package com.gustavo.backend.service;
+package com.gustavo.backend.services;
 
-import com.gustavo.backend.model.entity.Usuario;
+import com.gustavo.backend.model.entities.Usuario;
 
 public interface UsuarioService {
 

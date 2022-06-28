@@ -1,25 +1,23 @@
-package com.gustavo.backend.service.impl;
+package com.gustavo.backend.services.impls;
 
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gustavo.backend.exception.ErroAutenticacao;
-import com.gustavo.backend.exception.RegraNegocioException;
-import com.gustavo.backend.model.entity.Usuario;
-import com.gustavo.backend.model.repository.UsuarioRepository;
-import com.gustavo.backend.service.UsuarioService;
+import com.gustavo.backend.exceptions.ErroAutenticacao;
+import com.gustavo.backend.exceptions.RegraNegocioException;
+import com.gustavo.backend.model.entities.Usuario;
+import com.gustavo.backend.model.repositories.UsuarioRepository;
+import com.gustavo.backend.services.UsuarioService;
 
 @Service //tornando a classe em um bean gerenciado
 public class UsuarioServiceImpl implements UsuarioService {
 	
+	@Autowired
 	private UsuarioRepository repository;
-	
-	public UsuarioServiceImpl(UsuarioRepository repository) {
-		this.repository = repository;
-	}
 	
 	@Override
 	public Usuario autenticar(String email, String senha) {

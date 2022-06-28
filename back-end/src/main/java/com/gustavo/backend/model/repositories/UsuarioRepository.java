@@ -1,10 +1,10 @@
-package com.gustavo.backend.model.repository;
+package com.gustavo.backend.model.repositories;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.gustavo.backend.model.entity.Usuario;
+import com.gustavo.backend.model.entities.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 

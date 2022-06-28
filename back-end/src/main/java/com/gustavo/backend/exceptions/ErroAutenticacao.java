@@ -1,4 +1,4 @@
-package com.gustavo.backend.exception;
+package com.gustavo.backend.exceptions;
 
 public class ErroAutenticacao extends RuntimeException {
 

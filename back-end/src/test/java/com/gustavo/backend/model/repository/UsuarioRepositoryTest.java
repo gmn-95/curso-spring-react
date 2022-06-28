@@ -13,13 +13,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.gustavo.backend.model.entity.Usuario;
-/*
- * Teste de integração:
- * 
- * é o teste que precisa de recursos externos à aplicação
- * 
- * */
+import com.gustavo.backend.model.entities.Usuario;
+import com.gustavo.backend.model.repositories.UsuarioRepository;
 
 @RunWith(SpringRunner.class)
 @Profile("test")

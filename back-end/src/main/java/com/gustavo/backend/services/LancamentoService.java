@@ -1,8 +1,8 @@
-package com.gustavo.backend.service;
+package com.gustavo.backend.services;
 
 import java.util.List;
 
-import com.gustavo.backend.model.entity.Lancamento;
+import com.gustavo.backend.model.entities.Lancamento;
 import com.gustavo.backend.model.enums.StatusLancamento;
 
 public interface LancamentoService {
