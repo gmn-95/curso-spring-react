@@ -3,6 +3,7 @@ package com.gustavo.backend.api.resources;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -54,6 +55,14 @@ public class LancamentoResource {
 				return ResponseEntity.badRequest().body(e.getMessage());
 			}
 		}).orElseGet(() -> new ResponseEntity<String>("Lançamento não encontrado na base de dados!", HttpStatus.BAD_REQUEST));
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deletar(@PathVariable Long id){
+		return service.obterPorId(id).map(entity -> {
+			service.deletar(entity);
+			return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
+		}).orElseGet(() -> new ResponseEntity<>("Lançamento não encontrado na base de dados!", HttpStatus.BAD_REQUEST));
 	}
 	
 	private Lancamento converter(LancamentoDTO dto) {
