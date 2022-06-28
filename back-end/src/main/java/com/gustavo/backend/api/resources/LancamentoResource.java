@@ -85,7 +85,7 @@ public class LancamentoResource {
 		
 		Optional<Usuario> usuario = usuarioService.obterPorId(idUsuario);
 		if(!usuario.isPresent()) {
-			return ResponseEntity.badRequest().body("Não foi possível realziar a consulta! Usuário não encontrado para o Id informado!");
+			return new ResponseEntity<String>("Não foi possível realizar a consulta! Usuário não encontrado para o Id informado!", HttpStatus.BAD_REQUEST);
 		}
 		else {
 			lancamentoFiltro.setUsuario(usuario.get());
@@ -108,8 +108,14 @@ public class LancamentoResource {
 					  .orElseThrow(() -> new RegraNegocioException("Usuário não encontrado para o Id informadado!"));
 		
 		lancamento.setUsuario(usuario);
-		lancamento.setTipo(TipoLancamento.valueOf(dto.getTipo()));
-		lancamento.setStatusLancamento(StatusLancamento.valueOf(dto.getStatus()));
+
+		if(dto.getTipo() != null) {
+			lancamento.setTipo(TipoLancamento.valueOf(dto.getTipo()));
+		}
+		
+		if(dto.getStatus() != null) {
+			lancamento.setStatusLancamento(StatusLancamento.valueOf(dto.getStatus()));
+		}
 		
 		return lancamento;
 	}
